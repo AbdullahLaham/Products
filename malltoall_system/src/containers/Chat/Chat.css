@@ -17,7 +17,7 @@
   gap: 1rem;
   background: var(--cardColor);
   border-radius: 1rem;
-  padding: 1rem;
+  padding: .5rem;
   height: auto;
   min-height: 80vh;
   overflow: scroll;
@@ -26,6 +26,7 @@
 .Chat-list {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 1rem;
 }
 
@@ -42,6 +43,12 @@
 .conversation {
   border-radius: 0.5rem;
   padding: 10px;
+}
+@media only screen and (max-width: 900px) {
+  .conversation {
+    padding: 0;
+  }
+
 }
 
 .conversation > div {

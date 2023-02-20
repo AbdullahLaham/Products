@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import './conversation.css'
 // import { getUser } from "../../api/UserRequests";
 const Conversation = ({ data, currentUser, online, isSelected }) => {
   console.log(isSelected, 'isSelected')
@@ -29,7 +30,7 @@ const Conversation = ({ data, currentUser, online, isSelected }) => {
   // }, [])
   return (
     <>
-      <div className={`follower conversation ${isSelected ? 'isSelected' : ''}`}>
+      <div className={`follower conversation ${isSelected ? 'isSelected' : ''} `}>
           {online && <div className="online-dot"></div>}
 
           <img
@@ -39,7 +40,7 @@ const Conversation = ({ data, currentUser, online, isSelected }) => {
             style={{ width: "50px", height: "50px" }}
           />
 
-          <div className="name" style={{fontSize: '0.8rem'}}>
+          <div className="chat-name" style={{fontSize: '0.8rem'}}>
             <span>{data?.name ? data?.name : data?.participants[0]['name']}</span>
             <p className="last-message">{data?.last_message?.body}</p>
             {/* <span style={{color: online?"#51e200":""}}>{online? "Online" : "Offline"}</span> */}

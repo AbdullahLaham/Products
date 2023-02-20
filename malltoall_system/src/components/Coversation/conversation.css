@@ -1,0 +1,18 @@
+
+@media only screen and (max-width: 900px) {
+    .conversation {
+        width: 100%;
+        height: 100%;
+    }
+    .chat-name {
+      display: none;
+    }
+
+  }
+  
+  .followerImage {
+    width: 100%;
+    height: 100%;
+    
+  }
+  

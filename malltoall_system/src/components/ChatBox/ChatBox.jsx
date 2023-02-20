@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 // import { addMessage, getMessages } from "../../api/MessageRequests";
 // import { getUser } from "../../api/UserRequests";
+import * as api from '../../api';
 import "./ChatBox.css";
 import { format } from "timeago.js";
 import InputEmoji from 'react-input-emoji'
 import { useSelector } from "react-redux";
 
-const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
+const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage, chatDetails }) => {
   const [userData, setUserData] = useState('Abdullah Allaham');
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(chat);
   const [newMessage, setNewMessage] = useState("");
-  if (chat?.messages)
-    console.log('ffffff', chat);
-  // const {authData} = useSelector((state) => state?.userReducer);
+  
+    console.log('ffffff', messages);
+  const {authData} = useSelector((state) => state?.userReducer);
+  
   const handleChange = (newMessage)=> {
     setNewMessage(newMessage)
   }
@@ -51,21 +53,31 @@ const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
   // Always scroll to last Message
   useEffect(()=> {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
+    
   },[messages])
-
+  useEffect(() => {
+    setMessages(chat)
+  }, [])
 
 
   // Send Message
   const handleSend = async(e)=> {
+
     e.preventDefault()
-    const message = {
-      senderId : currentUser,
-      text: newMessage,
-      chatId: chat._id,
-  }
-  const receiverId = chat.members.find((id)=>id!==currentUser);
+  //   const message = {
+  //     senderId : currentUser,
+  //     text: newMessage,
+  //     chatId: chat._id,
+  // }
+  console.log('ftttttttt', chatDetails?.id, newMessage);
+  const {data} = await api.sendNewMessages({chatId: chatDetails?.pivot?.user_id , newMessage});
+  
+  setMessages([...messages, data]);
+  // const receiverId = chat.members.find((id)=>id!==currentUser);
   // send message to socket server
-  setSendMessage({...message, receiverId})
+  // setSendMessage({...message, receiverId})
+
+
   // send message to database
   // try {
   //   const { data } = await addMessage(message);
@@ -135,31 +147,27 @@ useEffect(()=> {
                   </div>
                 </>
               ))} */}
-                  {
-                    chat?.map((message) => {
+              <>
+                {chat?.length > 0 ? (
+
+                 
+                  messages?.map((message) => {
+                     console.log('chat message', message)
                       return (
                         <div ref={scroll}
-                    className="message own"
+                        className={
+                              message?.user?.id === authData?.id
+                                ? "message own"
+                                : "message"
+                            }
                   >
                     <span>{message?.body}</span>
                     <span>{message?.created_at?.slice(0,10)}</span>
                   </div>
                       )
                     })
-                  }
-                  {/* <div ref={scroll}
-                    className="message own"
-                  >
-                    <span>ooooooooooo</span>{" "}
-                    <span>{'19-5-2002'}</span>
-                  </div>
-
-                  <div ref={scroll}
-                    className="message"
-                  >
-                    <span>ooooooooooo</span>{" "}
-                    <span>{'19-5-2002'}</span>
-                  </div> */}
+                ) : <p className="m-auto text-red-500 font-bold text-[4rem] max-h-[100vh]">There is no messages</p>}
+              </>
             </div>
             {/* chat-sender */}
             <div className="chat-sender">
@@ -173,7 +181,9 @@ useEffect(()=> {
                 type="file"
                 name=""
                 id=""
+               
                 style={{ display: "none" }}
+
                 ref={imageRef}
               />
             </div>

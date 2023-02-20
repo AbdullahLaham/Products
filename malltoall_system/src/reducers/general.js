@@ -1,4 +1,4 @@
-import {  ADD_TO_CART, DELETE_FROM_CART, UPDATE_CART_ITEM, TRANSACTION, LATEST_PRODUCTS, CATEGORY_PRODUCTS, CURRENT_PRODUCT, CATEGORIES, ALL_PRODUCTS, GET_BRANDS, SLIDER_IMAGES, CURRENT_CATEGORY, WHISHLIST_ITEMS, START_LOADING, END_LOADING, PAGE_SELECTED, PRODUCT_REVIEWS } from "../constants";
+import {  ADD_TO_CART, DELETE_FROM_CART, UPDATE_CART_ITEM, TRANSACTION, LATEST_PRODUCTS, CATEGORY_PRODUCTS, CURRENT_PRODUCT, CATEGORIES, ALL_PRODUCTS, GET_BRANDS, SLIDER_IMAGES, CURRENT_CATEGORY, WHISHLIST_ITEMS, START_LOADING, END_LOADING, PAGE_SELECTED, PRODUCT_REVIEWS, USER_AGENTS } from "../constants";
 const reducer = (state = { 
         cart: (localStorage.getItem('cart')!== "undefined" && localStorage.getItem('cart')) ? JSON.parse(localStorage.getItem('cart')) : [],
         // transaction: null,
@@ -17,6 +17,7 @@ const reducer = (state = {
         whislistItems: localStorage.getItem('whislistItems') ? JSON.parse(localStorage.getItem('whislistItems')) : [],
         page_selected: localStorage.getItem('page_selected')!== "undefined" ? localStorage.getItem('page_selected') : '',
         product_reviews: localStorage.getItem('product_reviews') ? JSON.parse(localStorage.getItem('product_reviews')) : [],           
+        userAgents: localStorage.getItem('userAgents') ? JSON.parse(localStorage.getItem('userAgents')) : '',
     },
 
     action
@@ -122,6 +123,10 @@ const reducer = (state = {
         case PRODUCT_REVIEWS: {
             localStorage.setItem('product_reviews', JSON.stringify(action?.payload));
             return {...state, product_reviews: action?.payload}
+        }
+        case USER_AGENTS: {
+            localStorage.setItem('userAgents', JSON.stringify(action?.payload));
+            return {...state, userAgents: action?.payload}
         }
         
         default: {
